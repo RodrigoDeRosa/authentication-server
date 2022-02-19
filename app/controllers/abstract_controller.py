@@ -23,7 +23,7 @@ class AbstractController(Resource):
     _put_method = None
     _delete_method = None
 
-    __logger = Logger('AbstractController')
+    _logger = None
 
     def post(self, **kwargs):
         return self.handle_request(self._post_method, 'POST', **kwargs)
@@ -50,10 +50,10 @@ class AbstractController(Resource):
         try:
             return method(**kwargs)
         except ApplicationError as ae:
-            cls.__logger.error(ae.message)
+            cls._get_logger().error(ae.message)
             return cls.build_exception(ae.message, ae.status)
         except Exception as e:
-            cls.__logger.error(e)
+            cls._get_logger().error(e)
             return cls.build_exception(cls.INTERNAL_SERVER_ERROR_MESSAGE, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     @classmethod
@@ -68,3 +68,9 @@ class AbstractController(Resource):
     @classmethod
     def _to_json(cls, body: dict):
         return '' if body is None else jsonify(body)
+
+    @classmethod
+    def _get_logger(cls):
+        if not cls._logger:
+            cls._logger = Logger(cls.__name__)
+        return cls._logger

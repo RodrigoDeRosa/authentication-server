@@ -4,14 +4,8 @@
 PYTHONPATH = $PYTHONPATH:${pwd}
 VENV_DIR ?= venv
 
-prepare:
-	python3.8 -m venv venv;
-	. ${VENV_DIR}/bin/activate;
-	pip install -r requirements.txt;
-
 run:
-	. ${VENV_DIR}/bin/activate;
-	python3.8 run.py;
+	docker-compose up --build -d postgres app
 
 test:
 	. ${VENV_DIR}/bin/activate;

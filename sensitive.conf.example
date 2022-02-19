@@ -1,0 +1,7 @@
+app {
+  secret = "SOME_SECRET"
+}
+
+database {
+  password = "SOME_PASSWORD"
+}

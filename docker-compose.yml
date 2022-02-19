@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+
+  # Application
+  app:
+    env_file:
+      - docker.env
+    build:
+      target: release
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./resources:/resources
+      - ./app:/app
+    entrypoint: ./entrypoint.sh
+    ports:
+      - '5000:5000'
+    depends_on:
+      - postgres
+
+  # Database
+  postgres:
+    image: postgres
+    env_file:
+      - docker.env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - '5434:5432'
+
+volumes:
+  db-data:

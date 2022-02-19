@@ -1,10 +1,9 @@
 import logging
 
+from app.utils.configuration.config_holder import ConfigHolder
+
 
 class Logger:
-
-    MIN_LOGGING_LEVEL = logging.DEBUG
-    FORMATTING_STRING = '%(asctime)s - (%(process)d) - %(levelname)s - %(name)s - %(message)s'
 
     @classmethod
     def set_up(cls):
@@ -20,8 +19,8 @@ class Logger:
         handlers.append(logging.StreamHandler())
         # Configure
         logging.basicConfig(
-            format=cls.FORMATTING_STRING,
-            level=cls.MIN_LOGGING_LEVEL,
+            format=ConfigHolder.config().get('logging.format_string'),
+            level=logging.getLevelName(ConfigHolder.config().get('logging.min_logging_level')),
             handlers=handlers)
 
     def __init__(self, class_name):
