@@ -30,7 +30,6 @@ class DatabaseManager:
     @classmethod
     def build(cls, app: Flask):
         cls.DB.init_app(app)
-        # Inject Postgres connector
         cls.connector = PostgresConnector(cls.DB)
         cls.connector.init_db()
 
