@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import request
 
 from app.controller.abstract_controller import AbstractController
-from app.mapper.user_crud_dto_mapper import AccountCrudDtoMapper
+from app.mapper.account_crud_dto_mapper import AccountCrudDtoMapper
 from app.service.account.account_service import AccountService
 from app.utils.authentication.auth_manager import AuthManager
 
@@ -17,7 +17,8 @@ class AccountManagementController(AbstractController):
 
     @AuthManager.login_manager.login_required()
     def __get_account_data(self):
-        pass
+        account = AccountService.get_logged_account_data()
+        return self.build_response(AccountCrudDtoMapper.map_account_data_response(account))
 
     @AuthManager.login_manager.login_required()
     def __update_account_data(self):

@@ -1,7 +1,10 @@
 from app.database.daos.account_dao import AccountDao
+from app.model.account.account import Account
 from app.model.account.account_crud_dto import AccountCrudDto
+from app.model.auth.auth_data import AuthData
 from app.model.errors.already_existing_resource_error import AlreadyExistingResourceError
 from app.service.auth.auth_service import AuthService
+from app.utils.authentication.auth_manager import AuthManager
 
 
 class AccountService:
@@ -15,3 +18,8 @@ class AccountService:
 
         AuthService.create_account(creation_dto)
         AccountDao.store(creation_dto.to_account())
+
+    @classmethod
+    def get_logged_account_data(cls) -> Account:
+        auth_data: AuthData = AuthManager.login_manager.current_user()
+        return AccountDao.find_by_username(auth_data.username)

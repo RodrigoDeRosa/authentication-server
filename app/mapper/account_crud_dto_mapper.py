@@ -1,3 +1,4 @@
+from app.model.account.account import Account
 from app.model.account.account_crud_dto import AccountCrudDto
 from app.utils.mapping.mapping_utils import MappingUtils
 
@@ -9,6 +10,14 @@ class AccountCrudDtoMapper:
         for field in AccountCrudDto.compulsory_fields():
             MappingUtils.check_field_existence(field, request_body)
         return cls.__build_account(request_body)
+
+    @classmethod
+    def map_account_data_response(cls, account: Account) -> dict:
+        return {
+            'username': account.username,
+            'first_name': account.first_name,
+            'last_name': account.last_name
+        }
 
     @classmethod
     def __build_account(cls, request_body: dict) -> AccountCrudDto:
