@@ -1,15 +1,15 @@
 from typing import Optional
 
-from app.database.daos.generic_dao import GenericDAO
-from app.database.dtos.auth_dto import AuthDTO
+from app.database.daos.generic_dao import GenericDao
+from app.database.dtos.auth_dto import AuthDto
 from app.model.auth.auth_data import AuthData
 
 
-class AuthDAO(GenericDAO):
+class AuthDao(GenericDao):
 
     @classmethod
     def find(cls, username: str) -> Optional[AuthData]:
-        auth_dto = cls._get(AuthDTO, [AuthDTO.username == username])
+        auth_dto = cls._get(AuthDto, [AuthDto.username == username])
         if auth_dto:
             return cls.__to_model(auth_dto)
 
@@ -18,11 +18,9 @@ class AuthDAO(GenericDAO):
         cls._save(cls.__to_dto(auth_data))
 
     @classmethod
-    def __to_dto(cls, auth_data: AuthData) -> AuthDTO:
-        return AuthDTO(auth_data.username, auth_data.password)
+    def __to_dto(cls, auth_data: AuthData) -> AuthDto:
+        return AuthDto(auth_data.username, auth_data.password)
 
     @classmethod
-    def __to_model(cls, auth_dto: AuthDTO) -> AuthData:
-        return AuthData(
-            username=auth_dto.username,
-            password=auth_dto.password)
+    def __to_model(cls, auth_dto: AuthDto) -> AuthData:
+        return AuthData(username=auth_dto.username, password=auth_dto.password)

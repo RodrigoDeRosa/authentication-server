@@ -14,6 +14,7 @@ class IntegrationTestCase(TestCase):
         # Having an in memory database makes testing easier. Given that
         # PostgreSQL doesn't allow to have an in memory DB, we use SQLite
         # for simplicity.
+        # `alchemy-mock` seems to be another good option: https://pypi.org/project/alchemy-mock/
         os.environ['DATABASE_FULL_URL'] = 'sqlite:///:memory:'
 
         test_app = Flask(__name__)

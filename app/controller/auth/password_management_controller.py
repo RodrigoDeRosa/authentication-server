@@ -1,4 +1,4 @@
-from app.controllers.abstract_controller import AbstractController
+from app.controller.abstract_controller import AbstractController
 
 
 class PasswordManagementController(AbstractController):

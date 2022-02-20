@@ -1,6 +1,6 @@
-from app.controllers.auth.account_management_controller import AccountManagementController
-from app.controllers.auth.login_controller import LoginController
-from app.controllers.auth.password_management_controller import PasswordManagementController
+from app.controller.auth.account_management_controller import AccountManagementController
+from app.controller.auth.login_controller import LoginController
+from app.controller.auth.password_management_controller import PasswordManagementController
 
 
 class AuthRouter:

@@ -7,7 +7,7 @@ from app.database.database_manager import DatabaseManager
 from app.utils.logging.logger import Logger
 
 
-class GenericDAO:
+class GenericDao:
 
     T = TypeVar('T', bound=Model)
 
