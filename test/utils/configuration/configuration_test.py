@@ -7,7 +7,7 @@ from app.utils.configuration.configuration import Configuration
 
 class ConfigurationTest(TestCase):
 
-    def setUp(self) -> None:
+    def setUp(self):
         Configuration.ENV_CONF_FOLDER_PATH = \
             f'{abspath(join(dirname(__file__), "../../"))}/resources/config/env/'
         Configuration.SENSITIVE_CONF_PATH = \
@@ -16,6 +16,11 @@ class ConfigurationTest(TestCase):
 
     def test_read_value(self):
         self.assertEqual('test_db', self.config.get('database.name'))
+
+    def test_env_file_not_present(self):
+        self.config = Configuration('missing')
+        # The empty value is the default value in the global config
+        self.assertEqual('', self.config.get('database.name'))
 
     def test_read_with_default(self):
         self.assertEqual('Hello World!', self.config.get('invalidKey', 'Hello World!'))

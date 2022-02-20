@@ -16,14 +16,11 @@ class ConfigHolder:
     __DEFAULT_ENV = 'dev'
 
     @classmethod
-    def set_up(cls, env: str):
-        """ Create configuration based on environment. """
+    def set_for_env(cls, env: str):
         cls.__config = Configuration(env)
 
     @classmethod
     def config(cls) -> Configuration:
-        # Set up configuration if not yet existent
         if not cls.__config:
-            cls.set_up(os.environ.get('ENV', cls.__DEFAULT_ENV))
-        # Return configuration object
+            cls.set_for_env(os.environ.get('ENV', cls.__DEFAULT_ENV))
         return cls.__config

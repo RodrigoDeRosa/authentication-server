@@ -10,4 +10,4 @@ run:
 test:
 	. ${VENV_DIR}/bin/activate;
 	export ENV="test";
-	python -m unittest discover -v -s test -p *_test.py;
+	python3 -m unittest discover -v -s test -p *_test.py;
