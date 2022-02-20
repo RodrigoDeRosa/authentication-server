@@ -1,20 +1,20 @@
-from related import to_dict
+from flask import request
 
 from app.controller.abstract_controller import AbstractController
-from app.database.daos.auth_dao import AuthDao
-from app.model.auth.auth_data import AuthData
+from app.mapper.auth_request_mapper import AuthRequestMapper
+from app.service.auth.auth_service import AuthService
+from app.utils.authentication.auth_manager import AuthManager
 
 
 class LoginController(AbstractController):
 
     def __do_login(self):
-        self._get_logger().info("Received login request")
+        auth_data = AuthRequestMapper.map_login(request.json)
 
-        try:
-            AuthDao.store(AuthData('rodricra', '1234'))
-        except:
-            self._get_logger().warning('rodricra already exists!')
+        bearer_token = AuthService.generate_bearer_token(auth_data)
 
-        return self.build_response(to_dict(AuthDao.find('rodricra')))
+        response = self.build_response({'auth_token': bearer_token})
+        response.set_cookie(AuthManager.AUTH_COOKIE_NAME, bearer_token)
+        return response
 
     _post_method = __do_login

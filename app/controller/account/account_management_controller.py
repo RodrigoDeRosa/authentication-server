@@ -5,6 +5,7 @@ from flask import request
 from app.controller.abstract_controller import AbstractController
 from app.mapper.user_crud_dto_mapper import AccountCrudDtoMapper
 from app.service.account.account_service import AccountService
+from app.utils.authentication.auth_manager import AuthManager
 
 
 class AccountManagementController(AbstractController):
@@ -14,9 +15,11 @@ class AccountManagementController(AbstractController):
         AccountService.create_account(creation_dto)
         return self.build_response(status=HTTPStatus.CREATED)
 
+    @AuthManager.login_manager.login_required()
     def __get_account_data(self):
         pass
 
+    @AuthManager.login_manager.login_required()
     def __update_account_data(self):
         pass
 

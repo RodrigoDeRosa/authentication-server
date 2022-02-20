@@ -1,4 +1,4 @@
-from app.controller.auth.account_management_controller import AccountManagementController
+from app.controller.account.account_management_controller import AccountManagementController
 from app.controller.auth.login_controller import LoginController
 from app.controller.auth.password_management_controller import PasswordManagementController
 
