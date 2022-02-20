@@ -11,3 +11,4 @@ psycopg2-binary
 pyhocon
 gunicorn
 related
+markupsafe==2.0.1
