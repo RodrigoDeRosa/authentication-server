@@ -9,7 +9,7 @@ class AuthDaoTest(IntegrationTestCase):
         AuthDao.store(AuthData('username', 'password'))
         stored_data = AuthDao.find('username')
         self.assertEqual('username', stored_data.username)
-        self.assertEqual('password', stored_data.password)
+        self.assertTrue(stored_data.check_password('password'))
 
     def test_retrieve_non_existent_auth_data(self):
         stored_data = AuthDao.find('username')

@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from unittest import TestCase, mock
 
 from app.database.daos.auth_dao import AuthDao
@@ -22,10 +23,16 @@ class AccountServiceTest(TestCase):
         AuthService.create_account(self.creation_dto)
 
         verify_mock.assert_called_with(self.creation_dto.password)
-        store_mock.assert_called_with(self.creation_dto.to_auth_data())
+        store_mock.assert_called_with(self.AuthDataComparator(self.creation_dto))
 
     @mock.patch.object(PasswordUtils, 'verify_password', return_value=False)
     def test_create_account_with_invalid_password(self, verify_mock):
         with self.assertRaises(InvalidPasswordError):
             AuthService.create_account(self.creation_dto)
 
+    @dataclass
+    class AuthDataComparator:
+        dto: AccountCrudDto
+
+        def __eq__(self, other):
+            return self.dto.username == other.username and other.check_password(self.dto.password)
