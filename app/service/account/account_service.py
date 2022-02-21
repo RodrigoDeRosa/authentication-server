@@ -33,7 +33,7 @@ class AccountService:
         # to update; for simplicity, I've left this here in this specific order.
         if update_dto.password:
             AuthService.change_password(update_dto)
-        AccountDao.update(account)
+        AccountDao.update(update_dto.to_account())
 
     @classmethod
     def delete_logged_account(cls):
