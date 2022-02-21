@@ -20,6 +20,22 @@ class AccountService:
         AccountDao.store(creation_dto.to_account())
 
     @classmethod
-    def get_logged_account_data(cls) -> Account:
+    def get_logged_account(cls) -> Account:
         auth_data: AuthData = AuthManager.login_manager.current_user()
         return AccountDao.find_by_username(auth_data.username)
+
+    @classmethod
+    def update_logged_account(cls, update_dto: AccountCrudDto):
+        account = cls.get_logged_account()
+        # It would be better to have a separate endpoint for password updating
+        # since the new password could be invalid and that should result in a fail
+        # to update; for simplicity, I've left this here in this specific order.
+        if update_dto.password:
+            AuthService.change_password(update_dto)
+        AccountDao.update(account)
+
+    @classmethod
+    def delete_logged_account(cls):
+        username = AuthManager.login_manager.current_user().username
+        AccountDao.delete(username)
+        AuthService.delete(username)

@@ -12,6 +12,10 @@ class AccountCrudDtoMapper:
         return cls.__build_account(request_body)
 
     @classmethod
+    def map_update(cls, request_body: dict) -> AccountCrudDto:
+        return cls.__build_account(request_body)
+
+    @classmethod
     def map_account_data_response(cls, account: Account) -> dict:
         return {
             'username': account.username,

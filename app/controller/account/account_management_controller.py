@@ -17,13 +17,21 @@ class AccountManagementController(AbstractController):
 
     @AuthManager.login_manager.login_required()
     def __get_account_data(self):
-        account = AccountService.get_logged_account_data()
+        account = AccountService.get_logged_account()
         return self.build_response(AccountCrudDtoMapper.map_account_data_response(account))
 
     @AuthManager.login_manager.login_required()
     def __update_account_data(self):
-        pass
+        update_dto = AccountCrudDtoMapper.map_update(request.json)
+        AccountService.update_logged_account(update_dto)
+        return self.build_response(status=HTTPStatus.NO_CONTENT)
+
+    @AuthManager.login_manager.login_required()
+    def __delete_account(self):
+        AccountService.delete_logged_account()
+        return self.build_response(status=HTTPStatus.NO_CONTENT)
 
     _post_method = __create_account
     _get_method = __get_account_data
     _put_method = __update_account_data
+    _delete_method = __delete_account

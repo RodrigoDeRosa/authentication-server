@@ -1,6 +1,5 @@
 from app.controller.account.account_management_controller import AccountManagementController
 from app.controller.auth.login_controller import LoginController
-from app.controller.auth.password_management_controller import PasswordManagementController
 
 
 class AuthRouter:
@@ -9,6 +8,5 @@ class AuthRouter:
     def routes():
         return {
             LoginController: ['/login'],
-            AccountManagementController: ['/accounts/manage'],
-            PasswordManagementController: ['/accounts/password']
+            AccountManagementController: ['/accounts/manage']
         }

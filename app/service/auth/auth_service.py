@@ -11,20 +11,33 @@ class AuthService:
 
     @classmethod
     def create_account(cls, creation_dto: AccountCrudDto):
-        cls.__verify_password(creation_dto.password)
-        auth_data = creation_dto.to_auth_data()
-        auth_data.encrypt()
+        auth_data = cls.__get_encrypted_data_if_valid(creation_dto)
         AuthDao.store(auth_data)
+
+    @classmethod
+    def change_password(cls, update_dto: AccountCrudDto):
+        auth_data = cls.__get_encrypted_data_if_valid(update_dto)
+        AuthDao.change_password(auth_data)
+
+    @classmethod
+    def delete(cls, username: str):
+        AuthDao.delete(username)
 
     @classmethod
     def generate_bearer_token(cls, auth_data: AuthData):
         cls.__verify_auth_data(auth_data)
-        # Generate bearer token and return
         return AuthManager.generate_token(auth_data.username)
 
     @classmethod
     def retrieve_auth_data(cls, username: str) -> AuthData:
         return AuthDao.find(username)
+
+    @classmethod
+    def __get_encrypted_data_if_valid(cls, dto: AccountCrudDto) -> AuthData:
+        cls.__verify_password(dto.password)
+        auth_data = dto.to_auth_data()
+        auth_data.encrypt()
+        return auth_data
 
     @classmethod
     def __verify_auth_data(cls, auth_data: AuthData):
@@ -37,6 +50,5 @@ class AuthService:
 
     @classmethod
     def __verify_password(cls, password: str):
-        """ Check that the given password matches security standards. """
         if not PasswordUtils.verify_password(password):
             raise InvalidPasswordError(PasswordUtils.PASSWORD_REQUIREMENTS_READABLE)
