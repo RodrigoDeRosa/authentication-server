@@ -19,6 +19,10 @@ class AuthManager:
     def set_up(cls, app: Flask):
         Logger(cls.__name__).info('Configuring authentication manager...')
         cls.login_manager.verify_token(cls.__verify_token)
+        # Adding role management is as simple as adding a
+        # `cls.login_manager.get_user_roles(cls.__user_roles)`
+        # and storing the user roles inside the `AuthData` object
+        # If we have that, we can do `login_manager.login_required(roles=['admin'])
         cls.__token_serializer = Serializer(app.secret_key, expires_in=cls.__TOKEN_DURATION_SECS)
 
     @classmethod

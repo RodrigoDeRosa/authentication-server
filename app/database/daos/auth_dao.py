@@ -19,7 +19,7 @@ class AuthDao(GenericDao):
 
     @classmethod
     def change_password(cls, auth_data: AuthData):
-        cls._update(AuthDto, [AuthDto.username == auth_data.password], {'password': auth_data.password})
+        cls._update(AuthDto, [AuthDto.username == auth_data.username], {'password': auth_data.password})
 
     @classmethod
     def delete(cls, username: str):

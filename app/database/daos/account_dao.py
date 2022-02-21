@@ -17,8 +17,8 @@ class AccountDao(GenericDao):
         cls._save(cls.__to_dto(account))
 
     @classmethod
-    def update(cls, account: Account):
-        cls._update(AccountDto, [AccountDto.username == account.username], cls.__to_update_fields(account))
+    def update(cls, update_data: Account):
+        cls._update(AccountDto, [AccountDto.username == update_data.username], cls.__to_update_fields(update_data))
 
     @classmethod
     def delete(cls, username: str):
@@ -33,13 +33,8 @@ class AccountDao(GenericDao):
 
     @classmethod
     def __to_update_fields(cls, account: Account) -> dict:
-        # {attr: getattr(account, attr) for attr in account.__annotations__ if getattr(account, attr)}
-        fields = dict()
-        if account.first_name:
-            fields['first_name'] = account.first_name
-        if account.last_name:
-            fields['last_name'] = account.last_name
-        return fields
+        # All fields that are present mapped to their string name
+        return {attr: getattr(account, attr) for attr in account.__annotations__ if getattr(account, attr)}
 
     @staticmethod
     def __to_model(account_dto: AccountDto) -> Optional[Account]:

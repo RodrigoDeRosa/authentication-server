@@ -32,6 +32,19 @@ class AccountServiceTest(TestCase):
         with self.assertRaises(InvalidPasswordError):
             AuthService.create_account(self.creation_dto)
 
+    @mock.patch.object(AuthDao, 'change_password')
+    @mock.patch.object(PasswordUtils, 'verify_password', return_value=True)
+    def test_change_password(self, verify_mock, change_pwd_mock):
+        AuthService.change_password(self.creation_dto)
+
+        verify_mock.assert_called_with(self.creation_dto.password)
+        change_pwd_mock.assert_called_with(self.AuthDataComparator(self.creation_dto))
+
+    @mock.patch.object(PasswordUtils, 'verify_password', return_value=False)
+    def test_change_password_with_invalid_password(self, verify_mock):
+        with self.assertRaises(InvalidPasswordError):
+            AuthService.change_password(self.creation_dto)
+
     @mock.patch.object(AuthManager, 'generate_token', return_value='a-magic-token')
     @mock.patch.object(AuthDao, 'find')
     def test_generate_bearer_token(self, find_mock, token_mock):

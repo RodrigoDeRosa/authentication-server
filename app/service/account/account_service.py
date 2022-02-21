@@ -27,6 +27,7 @@ class AccountService:
     @classmethod
     def update_logged_account(cls, update_dto: AccountCrudDto):
         account = cls.get_logged_account()
+        update_dto.username = account.username
         # It would be better to have a separate endpoint for password updating
         # since the new password could be invalid and that should result in a fail
         # to update; for simplicity, I've left this here in this specific order.
